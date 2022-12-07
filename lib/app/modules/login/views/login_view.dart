@@ -1,23 +1,30 @@
+
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
+import 'package:libman/app/modules/api/connectedApi.dart';
+import 'package:libman/app/modules/login/controllers/loginField.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
-    return login_();
+    return login();
   }
 }
 
-class login_ extends StatefulWidget {
+class login extends StatefulWidget {
+  const login({
+    Key? key,
+  }) : super(key: key);
+
   @override
-  State<login_> createState() => _login_State();
+  State<login> createState() => _loginState();
 }
 
-class _login_State extends State<login_> {
+class _loginState extends State<login> {
   bool ishiddenpassword = true;
+  LoginController authController = Get.put(LoginController());
+  ConnectApi logindata = Get.put(ConnectApi());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,71 +67,39 @@ class _login_State extends State<login_> {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.05,
         ),
-        Container(
-          child: Text(
-            'NIS',
-            style: TextStyle(
-                fontSize: 17, fontFamily: 'Mulish', color: Colors.black),
-          ),
+        TFtextfield(
+          label: 'NIS',
+          hint: 'Masukan NIS',
+          controller: authController.nisC,
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.005,
-        ),
-        Container(
-            height: 51,
-            width: 307,
-            child: TextField(
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                hintText: "Masukan NIS anda ",
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            )),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.020,
         ),
-        Container(
-          child: Text(
-            'Password',
-            style: TextStyle(
-                fontSize: 17, fontFamily: 'Mulish', color: Colors.black),
-          ),
+        TftextfieldPassword(
+          controller: authController.passwordC,
         ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.005,
-        ),
-        Container(
-            height: 51,
-            width: 307,
-            child: TextField(
-              obscureText: ishiddenpassword,
-              decoration: InputDecoration(
-                suffixIcon: InkWell(
-                    onTap: togglePassword, child: Icon(Icons.visibility)),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                hintText: "Masukan Password anda ",
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                ),
-              ),
-            )),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.05,
         ),
         ElevatedButton(
           onPressed: () {
-            Get.toNamed('/home');
+            if (authController.nisC.text.isEmpty) {
+              Get.snackbar("Error", "NIS tidak boleh kosong");
+            } else if (authController.passwordC.text.isEmpty) {
+              Get.snackbar("Error", "Password tidak boleh kosong");
+            } else if (authController.nisC.text.isEmpty &&
+                authController.passwordC.text.isEmpty) {
+              Get.snackbar("Error", "NIS dan Password tidak boleh kosong");
+            } else {
+              logindata.loginData();
+            }
           },
           child: Text(
             "Masuk",
             style: TextStyle(fontFamily: 'Mulish', fontSize: 17),
           ),
           style: ElevatedButton.styleFrom(
-            primary: Color(0xFF0041C4),
+            backgroundColor: Color(0xFF0041C4),
             fixedSize: Size(307, 52),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -158,11 +133,5 @@ class _login_State extends State<login_> {
         ),
       ]),
     ));
-  }
-
-  void togglePassword() {
-    setState(() {
-      ishiddenpassword = !ishiddenpassword;
-    });
   }
 }

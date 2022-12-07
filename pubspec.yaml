@@ -7,9 +7,13 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
-  get: 4.6.5
   flutter:
     sdk: flutter
+  get: 4.6.5
+  http: ^0.13.5
+  image_picker: ^0.8.6
+  rflutter_alert: ^2.0.4
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -21,6 +25,7 @@ flutter:
   assets:
     - image/daftarBuku/
     - image/gambar/
+    - image/images/
   fonts:
     - family: Mulish
       fonts:

@@ -1,87 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../models/user.dart';
-import '../../provider/userP.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
-  //TODO: Implement LoginController
+  late TextEditingController nisC;
+  late TextEditingController passwordC;
 
- var users = List<User>.empty().obs;
-
-  void snackBarError(String msg) {
-    Get.snackbar(
-      "ERROR",
-      msg,
-      duration: Duration(seconds: 2),
-    );
+  savpref(String status) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('status', status).obs;
   }
 
-  void add(String name, String password, String repassword) {
-    if (name != '' && password != ''&& repassword != '' ) {
-      if (password.contains("@")) {
-        userProvider().postdata(name, password).then((value) {
-          users.add(
-            User(
-              id: value.body['name'].toString(),
-              name: name,
-              password: password,
-              repassword: repassword,
-        
-            ),
-          );
-        });
-        Get.toNamed('/login');
-      } else {
-        snackBarError("Masukan email valid");
-      }
-    } else {
-      snackBarError("Semua data harus diisi");
-    }
+  var status;
+  getPref() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    status = pref.getString('status').obs;
   }
 
-  User userById(String id) {
-    return users.firstWhere((element) => element.id == id);
+  @override
+  void onInit() {
+    getPref();
+    super.onInit();
+    nisC = TextEditingController();
+    passwordC = TextEditingController();
   }
 
-  void edit(String id, String name, String password, String repassword) {
-    if (name != '' && password != ''&& repassword != '') {
-      if (password.contains("@")) {
-        userProvider().editdata(id, name, password).then((_) {
-          final user = userById(id);
-          user.name = name;
-          user.password = password;
-          user.repassword = repassword;
-       
-          users.refresh();
-        });
-      
-        Get.back();
-      } else {
-        snackBarError("Masukan email valid");
-      }
-    } else {
-      snackBarError("Semua data harus diisi");
-    }
-  }
-
-  Future<bool> delete(String id) async {
-    bool _deleted = false;
-    await Get.defaultDialog(
-      title: "DELETE",
-      middleText: "Apakah kamu yakin untuk menghapus data user ini?",
-      textConfirm: "Ya",
-      confirmTextColor: Colors.white,
-      onConfirm: () {
-        userProvider().deletedata(id).then((_) {
-          users.removeWhere((element) => element.id == id);
-          _deleted = true;
-        });
-
-        Get.back();
-      },
-      textCancel: "Tidak",
-    );
-    return _deleted;
+  @override
+  void onClose() {
+    nisC.dispose();
+    super.onClose();
   }
 }

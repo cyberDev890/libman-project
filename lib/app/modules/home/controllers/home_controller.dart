@@ -1,11 +1,17 @@
 import 'package:get/get.dart';
+import 'package:libman/app/modules/models/model_test.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  // var arguments = Get.arguments;
+
+  // Data get userData => arguments[0];
+  // String? get userName => userData.namaSiswa;
+  // String? get nis => userData.nis;
 
   final count = 0.obs;
   @override
   void onInit() {
+    // print("Datanya $userData");
     super.onInit();
   }
 

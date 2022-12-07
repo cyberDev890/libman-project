@@ -62,16 +62,14 @@ class WelcomeView extends GetView<WelcomeController> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.15),
             ElevatedButton(
               onPressed: () {
-                Get.snackbar("test", "test",
-                    snackPosition: SnackPosition.TOP,
-                    animationDuration: Duration(seconds: 1));
+                Get.toNamed('/home');
               },
               child: Text(
                 "Masuk",
                 style: TextStyle(fontFamily: 'Mulish', fontSize: 17),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFF0041C4),
+                backgroundColor: Color(0xFF0041C4),
                 fixedSize: Size(307, 52),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),

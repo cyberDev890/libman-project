@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
+  var isProficPicPathSet = false.obs;
+  var profilePicPath = "".obs;
 
-  final count = 0.obs;
+  void setProfileImage(String path) {
+    profilePicPath.value = path;
+    isProficPicPathSet.value = true;
+  }   
+
   @override
   void onInit() {
     super.onInit();
@@ -16,5 +21,4 @@ class ProfileController extends GetxController {
 
   @override
   void onClose() {}
-  void increment() => count.value++;
 }

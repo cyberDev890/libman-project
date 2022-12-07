@@ -2,27 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SignUpController extends GetxController {
-  //TODO: Implement SignUpController
-
- late TextEditingController nameC;
+  late TextEditingController namaC;
+  late TextEditingController nisC;
+  late TextEditingController tingkatan;
+  late TextEditingController kelas;
+  late TextEditingController noTelp;
   late TextEditingController passwordC;
-  late TextEditingController repasswordC;
-
+  late TextEditingController password2C;
+  late TextEditingController jenisKelamin;
+  late TextEditingController gambarSiswa;
 
   @override
   void onInit() {
     super.onInit();
-    nameC = TextEditingController();
+    namaC = TextEditingController();
+    nisC = TextEditingController();
+    tingkatan = TextEditingController();
+    kelas = TextEditingController();
+    noTelp = TextEditingController();
     passwordC = TextEditingController();
-    repasswordC = TextEditingController();
-   
+    password2C = TextEditingController();
+    gambarSiswa = TextEditingController();
+    jenisKelamin = TextEditingController();
   }
 
   @override
   void onClose() {
-    nameC.dispose();
-    passwordC.dispose();
-    repasswordC.dispose();
-    super.onClose();
+    namaC = TextEditingController();
+    nisC = TextEditingController(); 
+    tingkatan = TextEditingController();
+    kelas = TextEditingController();
+    noTelp = TextEditingController();
+    passwordC = TextEditingController();
+    password2C = TextEditingController();
+    gambarSiswa = TextEditingController();
+    jenisKelamin = TextEditingController();
   }
 }
