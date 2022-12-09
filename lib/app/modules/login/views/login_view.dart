@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:libman/app/modules/api/connectedApi.dart';
@@ -6,23 +5,6 @@ import 'package:libman/app/modules/login/controllers/loginField.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  @override
-  Widget build(BuildContext context) {
-    return login();
-  }
-}
-
-class login extends StatefulWidget {
-  const login({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<login> createState() => _loginState();
-}
-
-class _loginState extends State<login> {
-  bool ishiddenpassword = true;
   LoginController authController = Get.put(LoginController());
   ConnectApi logindata = Get.put(ConnectApi());
   @override

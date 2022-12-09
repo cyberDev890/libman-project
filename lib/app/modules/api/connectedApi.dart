@@ -19,13 +19,12 @@ class ConnectApi {
       'password': authController.passwordC.text,
     });
 
-    UserData userData = UserData.fromMap(jsonDecode(responseLogin.body));
+    // UserData userData = UserData.fromMap(jsonDecode(responseLogin.body));
     Map<String, dynamic> map = jsonDecode(responseLogin.body);
     String status = map['status'];
     if (status == "Success") {
       authController.nisC.clear();
       authController.passwordC.clear();
-      Obx(() => authController.savpref(status));
       Get.snackbar(
         "Success",
         "Login Success",
