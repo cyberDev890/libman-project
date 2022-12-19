@@ -23,8 +23,7 @@ class UserData {
         message: json["message"] == null ? null : json["message"],
         data: json["data"] == null
             ? null
-            : List<Data>.from(json["data"].map((x) => Data.fromMap(x))),  
-              
+            : List<Data>.from(json["data"].map((x) => Data.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {

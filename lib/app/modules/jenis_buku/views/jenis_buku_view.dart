@@ -94,7 +94,9 @@ class JenisBukuView extends GetView<JenisBukuController> {
                 physics: const ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed("/daftar-buku");
+                    },
                     child: Card(
                       shadowColor: Colors.grey[200],
                       child: Column(

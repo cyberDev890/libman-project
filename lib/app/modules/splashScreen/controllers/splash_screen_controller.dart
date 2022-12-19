@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 class SplashScreenController extends GetxController {
+
 
   final count = 0.obs;
   @override

@@ -27,13 +27,12 @@ import '../modules/tentang_aplikasi/bindings/tentang_aplikasi_binding.dart';
 import '../modules/tentang_aplikasi/views/tentang_aplikasi_view.dart';
 import '../modules/welcome/bindings/welcome_binding.dart';
 import '../modules/welcome/views/welcome_view.dart';
-                                                                                        
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.SPLASH_SCREEN;
 
   static final routes = [
     GetPage(

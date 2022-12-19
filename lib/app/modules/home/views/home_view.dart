@@ -4,23 +4,27 @@ import 'package:libman/app/modules/home/views/card_view.dart';
 import 'package:libman/app/modules/models/Product.dart';
 import 'package:libman/app/routes/app_pages.dart';
 
+import '../../api/connectedApi.dart';
 import '../controllers/home_controller.dart';
 import './drawerScreen.dart';
 import 'item_card.dart';
 import 'navbar.dart';
 
 class HomeView extends GetView<HomeController> {
+  final VoidCallback? signOut;
+
+  HomeView({Key? key, this.signOut}) : super(key: key);
   final scaffoldKey = GlobalKey<ScaffoldState>();
   HomeController homeController = Get.put(HomeController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
         appBar: appbar(),
         drawer: DrawerScreen(
-          nama: 'tidak ada data',
-          nis: 'tidak ada data',
+          signOut: () {
+            signOut!();
+          },
         ),
         body: SafeArea(
           child: Padding(

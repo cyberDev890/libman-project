@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,6 +7,33 @@ import 'package:get/get.dart';
 import '../controllers/splash_screen_controller.dart';
 
 class SplashScreenView extends GetView<SplashScreenController> {
+  @override
+  Widget build(BuildContext context) {
+    return splashScreen();
+  }
+}
+
+class splashScreen extends StatefulWidget {
+  const splashScreen({super.key});
+
+  @override
+  State<splashScreen> createState() => _splashScreenState();
+}
+
+class _splashScreenState extends State<splashScreen> {
+  fungsion() {
+    var duration = Duration(seconds: 3);
+    return Timer(duration, () {
+      Get.toNamed('/login');
+    });
+  }
+
+  @override
+  void initState() {
+    fungsion();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

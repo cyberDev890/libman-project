@@ -9,6 +9,7 @@ void main() {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      // home: login(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     ),

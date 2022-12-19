@@ -5,48 +5,57 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:libman/app/modules/api/api.dart';
+import 'package:libman/app/modules/profile/controllers/profile_field.dart';
 import 'package:libman/app/modules/signUp/controllers/sign_up_field.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
+  @override
+  Widget build(BuildContext context) {
+    return profile();
+  }
+}
+
+class profile extends StatefulWidget {
+  profile({super.key});
+
+  @override
+  State<profile> createState() => _profileState();
+}
+
+class _profileState extends State<profile> {
   File? pickedImageFile;
   String? pickedImageFileName, imagedata;
-  // String? NIS,nama,password;
-
   ProfileController profileController = Get.put(ProfileController());
-  TextEditingController namaC = TextEditingController();
 
   Future<void> getImage(ImageSource source) async {
     final pickedImage =
         await ImagePicker().pickImage(source: source, imageQuality: 100);
-
     pickedImageFile = File(pickedImage!.path);
     pickedImageFileName = pickedImageFile!.path.split('/').last;
     imagedata = base64Encode(pickedImageFile!.readAsBytesSync());
     profileController.setProfileImage(pickedImageFile!.path);
-
-    print("ini pikfile $pickedImageFile");
-    print("ini pikfilename $pickedImageFileName");
-    print("ini imagedata $imagedata");
+    print(imagedata);
+    print(pickedImageFile);
+    print(pickedImageFileName);
   }
 
-// setup(){
-//   NISC = TextEditingController(text: NIS);
-//   namaC = TextEditingController(text: nama);
-//   passwordC = TextEditingController(text: password);
-// }
   Future uploadImage() async {
     try {
-      String uri = "https://10.0.2.2/testing/profile.php";
-      var request = await http.post(Uri.parse(uri), body: {
-        'NIS': namaC.text,
+      var url = Uri.parse(API.profile);
+      var request = await http.post(url, body: {
+        'NIS': profileController.nisC.text,
+        'nama_siswa': profileController.namaC.text,
+        'notelp': profileController.noTelp.text,
         'data': imagedata,
-        'name': pickedImageFileName,  
+        'name': pickedImageFileName,
       });
       var respon = json.decode(request.body);
-      if (respon['succes'] == "true") {
-        namaC.clear();
+      print(respon);
+      if (respon['success'] == "true") {
         Get.snackbar(
           "Success",
           "Upload Success",
@@ -62,6 +71,55 @@ class ProfileView extends GetView<ProfileController> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Widget bottomSheet(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      width: double.infinity,
+      height: size.height * 0.2,
+      child: Column(children: [
+        TextButton.icon(
+          onPressed: () {
+            getImage(ImageSource.camera);
+            print("Camera");
+          },
+          icon: Icon(Icons.camera),
+          label: Text('Camera'),
+        ),
+        TextButton.icon(
+          onPressed: () {
+            getImage(ImageSource.gallery);
+            print("Gallery");
+          },
+          icon: Icon(Icons.image),
+          label: Text('Gallery'),
+        ),
+      ]),
+    );
+  }
+
+  String? nama = '';
+  String? nis = '';
+  String? gambar = '';
+  String? kelas = '';
+  String? telp = '';
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      nama = preferences.getString("nama_siswa");
+      nis = preferences.getString("NIS");
+      gambar = preferences.getString("gambar");
+      kelas = preferences.getString("kelas");
+      telp = preferences.getString("notelp");
+    });
+  }
+
+  @override
+  void initState() {
+    getPref();
+
+    super.initState();
   }
 
   @override
@@ -97,14 +155,13 @@ class ProfileView extends GetView<ProfileController> {
                 Stack(
                   children: [
                     Obx(() => CircleAvatar(
-                          backgroundImage: profileController
-                                      .isProficPicPathSet.value ==
-                                  true
-                              ? FileImage(File(
-                                      profileController.profilePicPath.value))
-                                  as ImageProvider
-                              : NetworkImage(
-                                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:
+                              profileController.isProficPicPathSet.value == true
+                                  ? FileImage(File(profileController
+                                      .profilePicPath.value)) as ImageProvider
+                                  : NetworkImage(
+                                      'https://10.0.2.2/testing/$gambar'),
                           radius: 80,
                         )),
                     Positioned(
@@ -132,32 +189,33 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                   ],
                 ),
-                Container(
-                  child: Text(
-                    'Nama',
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontFamily: 'Mulish',
-                        color: Colors.black),
-                  ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TLtextfieldProfile(
+                    controller: profileController.nisC,
+                    label: "NIS",
+                    hint: "$nis",
+                    keyboardTipe: TextInputType.number),
+                const SizedBox(
+                  height: 20.0,
                 ),
                 TLtextfield(
-                    // controller: namaC,
+                    controller: profileController.namaC,
                     label: "Nama",
-                    hint: "",
-                    keyboardTipe: TextInputType.name),
+                    hint: "$nama",
+                    keyboardTipe: TextInputType.text),
                 const SizedBox(
                   height: 20.0,
                 ),
                 TLtextfield(
-                    label: "NIS", hint: "", keyboardTipe: TextInputType.number),
+                    controller: profileController.noTelp,
+                    label: "No Telepon",
+                    hint: "$telp",
+                    keyboardTipe: TextInputType.text),
                 const SizedBox(
                   height: 20.0,
                 ),
-                TLpassword(
-                    label: "Password",
-                    hint: "",
-                    keyboardTipe: TextInputType.visiblePassword),
                 const SizedBox(
                   height: 20.0,
                 ),
@@ -185,32 +243,6 @@ class ProfileView extends GetView<ProfileController> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget bottomSheet(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: double.infinity,
-      height: size.height * 0.2,
-      child: Column(children: [
-        TextButton.icon(
-          onPressed: () {
-            getImage(ImageSource.camera);
-            print("Camera");
-          },
-          icon: Icon(Icons.camera),
-          label: Text('Camera'),
-        ),
-        TextButton.icon(
-          onPressed: () {
-            getImage(ImageSource.gallery);
-            print("Gallery");
-          },
-          icon: Icon(Icons.image),
-          label: Text('Gallery'),
-        ),
-      ]),
     );
   }
 }

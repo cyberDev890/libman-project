@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:libman/app/modules/models/model_test.dart';
 
+import '../../api/connectedApi.dart';
+
 class HomeController extends GetxController {
   // var arguments = Get.arguments;
 
@@ -11,7 +13,6 @@ class HomeController extends GetxController {
   final count = 0.obs;
   @override
   void onInit() {
-    // print("Datanya $userData");
     super.onInit();
   }
 

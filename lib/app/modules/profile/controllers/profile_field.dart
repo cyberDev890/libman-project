@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 
-class TFtextfield extends StatefulWidget {
+class TLtextfieldProfile extends StatefulWidget {
   final String? label;
   final String? hint;
-  final double? height;
+  final String? initialValue;
   final TextEditingController? controller;
-  const TFtextfield(
+  final TextInputType? keyboardTipe;
+  final int? maxLenght;
+  final double? height;
+  const TLtextfieldProfile(
       {required this.label,
       required this.hint,
-      required this.controller,
+      this.controller,
+      this.initialValue,
+      required this.keyboardTipe,
+      this.maxLenght,
       this.height});
 
   @override
-  State<TFtextfield> createState() => _TFtextfieldState();
+  State<TLtextfieldProfile> createState() => _TLtextfieldProfileState();
 }
 
-class _TFtextfieldState extends State<TFtextfield> {
+class _TLtextfieldProfileState extends State<TLtextfieldProfile> {
   @override
   Widget build(BuildContext context) {
     return Container(
         height: widget.height,
         width: 307,
         child: TextFormField(
+          initialValue: widget.initialValue,
+          maxLength: widget.maxLenght,
           controller: widget.controller,
-          maxLength: 4,
-          keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
+          keyboardType: widget.keyboardTipe,
+          autocorrect: false,
           decoration: InputDecoration(
             labelText: widget.label,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -38,19 +46,25 @@ class _TFtextfieldState extends State<TFtextfield> {
   }
 }
 
-class TftextfieldPassword extends StatefulWidget {
+class TLpasswordProfile extends StatefulWidget {
+  final String? label;
+  final String? hint;
   final TextEditingController? controller;
+  final TextInputType? keyboardTipe;
   final double? height;
-
-  const TftextfieldPassword({required this.controller, this.height});
+  const TLpasswordProfile(
+      {required this.label,
+      required this.hint,
+      this.controller,
+      required this.keyboardTipe,
+      this.height});
 
   @override
-  State<TftextfieldPassword> createState() => _TftextfieldPasswordState();
+  State<TLpasswordProfile> createState() => _TLpasswordProfileState();
 }
 
-class _TftextfieldPasswordState extends State<TftextfieldPassword> {
+class _TLpasswordProfileState extends State<TLpasswordProfile> {
   bool ishiddenpassword = true;
-
   @override
   Widget build(BuildContext context) {
     void togglePassword() {
@@ -63,20 +77,20 @@ class _TftextfieldPasswordState extends State<TftextfieldPassword> {
         height: widget.height,
         width: 307,
         child: TextFormField(
-          keyboardType: TextInputType.visiblePassword,
+          maxLength: 15,
           controller: widget.controller,
           textInputAction: TextInputAction.next,
-          maxLength: 15,
+          keyboardType: widget.keyboardTipe,
           obscureText: ishiddenpassword,
           decoration: InputDecoration(
-            label: Text("Password"),
+            labelText: widget.label,
             suffixIcon: InkWell(
                 onTap: togglePassword,
-                child: Icon(ishiddenpassword
-                    ? Icons.visibility_off
-                    : Icons.visibility)),
+                child: ishiddenpassword == true
+                    ? Icon(Icons.visibility_off)
+                    : Icon(Icons.visibility)),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-            hintText: "Masukan Password anda ",
+            hintText: widget.hint,
             hintStyle: TextStyle(
               color: Colors.grey,
             ),
