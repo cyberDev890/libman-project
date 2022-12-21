@@ -1,6 +1,6 @@
 # libman
 
-sebuah project unutk memenuhi tugas akhir
+sebuah project untuk memenuhi tugas akhir
 
 
 ## Getting Started
