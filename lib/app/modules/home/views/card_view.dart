@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../models/buku.dart';
+
 class cardView extends StatefulWidget {
-  const cardView({super.key});
+  final Product product1;
+  const cardView({super.key, required this.product1});
 
   @override
   State<cardView> createState() => _cardViewState();
@@ -26,7 +29,7 @@ class _cardViewState extends State<cardView> {
               children: [
                 Container(
                   // margin: EdgeInsets.only(top: 5, left: 12),
-                  child: Text("Seni budaya",
+                  child: Text(widget.product1.title!,
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 17,
@@ -43,7 +46,7 @@ class _cardViewState extends State<cardView> {
                 ),
                 Container(
                   // margin: EdgeInsets.fromLTRB(0, 9, 15, 10),
-                  child: Text("Semester 12",
+                  child: Text(widget.product1.semester!,
                       style: TextStyle(
                           color: Colors.grey,
                           fontSize: 14,

@@ -5,11 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:libman/app/modules/api/api.dart';
 
 import '../login/controllers/login_controller.dart';
+
 import '../signUp/controllers/sign_up_controller.dart';
 
 class ConnectApi {
   LoginController authController = Get.put(LoginController());
   SignUpController signUp = Get.put(SignUpController());
+
 
   Future register() async {
     try {

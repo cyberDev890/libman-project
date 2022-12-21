@@ -21,6 +21,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   String? nis = '';
   String? gambar = '';
   String? kelas = '';
+  bool isloading = true;
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
@@ -28,11 +29,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
       nis = preferences.getString("NIS");
       gambar = preferences.getString("gambar");
       kelas = preferences.getString("kelas");
+      isloading = false;
     });
   }
 
 //buatkan refresh image setelah edit profile di profile screen  //
- 
+
   @override
   void initState() {
     getPref();
@@ -60,16 +62,20 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 onTap: () {
                   Get.toNamed('/profile');
                 },
-                child: CircleAvatar(
-                  backgroundColor: Colors.grey[200],
-                  child: ClipOval(
-                      child: Image.network(
-                    "https://10.0.2.2/testing/$gambar",
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.contain,
-                  )),
-                ),
+                child: isloading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CircleAvatar(
+                        backgroundColor: Colors.grey[200],
+                        child: ClipOval(
+                            child: Image.network(
+                          "https://10.0.2.2/testing/$gambar",
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.contain,
+                        )),
+                      ),
               ),
               accountEmail: Text("$nis",
                   style: TextStyle(
@@ -100,14 +106,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
               text: '7',
               ontilePressed: () {
                 Get.toNamed('/daftar-favorit');
-              },
-            ),
-            DrawerListTile(
-              iconData: Icons.history,
-              title: "History",
-              text: '7',
-              ontilePressed: () {
-                Get.toNamed('/history');
               },
             ),
             DrawerListTile(

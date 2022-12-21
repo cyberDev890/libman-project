@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Product extends GetxController {
@@ -58,14 +57,6 @@ final List<Product> products = [
     size: 12,
     description: dummyText,
     image: "image/images/buku5.jpg",
-  ),
-  Product(
-    id: 6,
-    title: "Seni Budaya",
-    semester: 'Semester 1',
-    size: 12,
-    description: dummyText,
-    image: "image/images/buku6.jpg",
   ),
 ];
 

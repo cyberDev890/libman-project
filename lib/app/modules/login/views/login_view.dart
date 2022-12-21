@@ -55,7 +55,6 @@ class _loginState extends State<login> {
       }
       setState(() {
         _loginstatus = loginstatus.signIn;
-        CircularProgressIndicator();
         savpref(status, nama, nis, gambar, telp, tingkatan);
       });
       authController.nisC.clear();

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../../models/Product.dart';
+import '../../models/buku.dart';
 import '../controllers/daftar_favorit_controller.dart';
 
 class DaftarFavoritView extends GetView<DaftarFavoritController> {

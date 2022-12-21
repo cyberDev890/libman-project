@@ -4,6 +4,7 @@ class DetailController extends GetxController {
   //TODO: Implement DetailController
 
   var product = Get.arguments;
+  var buku = Get.arguments;
 
 
   final count = 0.obs;

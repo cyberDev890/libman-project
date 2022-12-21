@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:libman/app/modules/login/views/login_view.dart';
 
 import '../controllers/splash_screen_controller.dart';
 
@@ -24,7 +25,7 @@ class _splashScreenState extends State<splashScreen> {
   fungsion() {
     var duration = Duration(seconds: 3);
     return Timer(duration, () {
-      Get.toNamed('/login');
+      Get.offAll(LoginView());
     });
   }
 

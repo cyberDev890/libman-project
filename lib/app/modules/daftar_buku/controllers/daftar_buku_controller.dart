@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 class DaftarBukuController extends GetxController {
   //TODO: Implement DaftarBukuController
-  var product = Get.arguments;
+  var buku = Get.arguments;
   final count = 0.obs;
   @override
   void onInit() {

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:libman/app/modules/home/views/card_view.dart';
-import 'package:libman/app/modules/models/Product.dart';
+import 'package:libman/app/modules/models/buku.dart';
 import 'package:libman/app/routes/app_pages.dart';
-
-import '../../api/connectedApi.dart';
 import '../controllers/home_controller.dart';
 import './drawerScreen.dart';
 import 'item_card.dart';
@@ -45,7 +43,7 @@ class HomeView extends GetView<HomeController> {
                   Container(
                     child: TextButton(
                       onPressed: () {
-                        Get.toNamed(Routes.JENIS_BUKU);
+                        Get.toNamed('/jenis-buku');
                       },
                       child: Center(
                         child: Text('Lihat lainnya',
@@ -99,7 +97,7 @@ class HomeView extends GetView<HomeController> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.01,
               ),
-              cardView(),
+              cardView(product1: products[0]),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
@@ -123,20 +121,26 @@ class HomeView extends GetView<HomeController> {
                 height: MediaQuery.of(context).size.height * 0.01,
               ),
               Expanded(
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(10),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      childAspectRatio: 0.65),
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    return ItemCard(
-                      product: products[index],
-                    );
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await Future.delayed(Duration(seconds: 2));
+                    Get.toNamed(Routes.HOME);
                   },
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(10),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 20,
+                        childAspectRatio: 0.65),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      return ItemCard(
+                        product: products[index],
+                      );
+                    },
+                  ),
                 ),
               ),
             ]),

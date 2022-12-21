@@ -18,7 +18,6 @@ abstract class Routes {
   static const TENTANG_APLIKASI = _Paths.TENTANG_APLIKASI;
   static const COSTUMER_SERVICE = _Paths.COSTUMER_SERVICE;
   static const DAFTAR_BUKU = _Paths.DAFTAR_BUKU;
-  static const AWI = _Paths.AWI;
 }
 
 abstract class _Paths {
@@ -36,5 +35,4 @@ abstract class _Paths {
   static const TENTANG_APLIKASI = '/tentang-aplikasi';
   static const COSTUMER_SERVICE = '/costumer-service';
   static const DAFTAR_BUKU = '/daftar-buku';
-  static const AWI = '/awi';
 }

@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../models/Product.dart';
+import '../../models/buku.dart';
 import '../controllers/detail_controller.dart';
 
 class DetailView extends GetView<DetailController> {
-  const DetailView({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
+  const DetailView({Key? key, required this.product, required this.listData})
+      : super(key: key);
   final Product product;
-
+  final Map listData;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +55,7 @@ class DetailView extends GetView<DetailController> {
                     Container(
                       height: 30,
                       child: Text(
-                        product.title!,
+                        listData['nama_buku'],
                         style: TextStyle(
                             letterSpacing: 0.5,
                             fontSize: 20,
@@ -80,7 +78,7 @@ class DetailView extends GetView<DetailController> {
                         ),
                         Container(
                           child: Text(
-                            product.size!.toString(),
+                            listData['jumlah'],
                             style: TextStyle(
                                 color: Color(0xff8A8A8E),
                                 letterSpacing: 0.5,
@@ -102,7 +100,7 @@ class DetailView extends GetView<DetailController> {
                         ),
                         Container(
                           child: Text(
-                            product.semester!,
+                            "Semester" + listData['semester'],
                             style: TextStyle(
                                 color: Color(0xff8A8A8E),
                                 letterSpacing: 0.5,
@@ -120,12 +118,12 @@ class DetailView extends GetView<DetailController> {
                               thickness: 2,
                             )),
                         const SizedBox(
-                          width: 15,
+                          width: 10,
                         ),
                         Container(
                           width: 125,
                           child: Text(
-                            product.id.toString(),
+                            "Kelas " + listData['tingkatan'],
                             style: TextStyle(
                                 color: Color(0xff8A8A8E),
                                 fontSize: 14,
@@ -142,7 +140,7 @@ class DetailView extends GetView<DetailController> {
                     Container(
                       height: MediaQuery.of(context).size.height * 0.030,
                       child: Text(
-                        product.title!,
+                        listData['nama_buku'],
                         style: TextStyle(
                             fontSize: 16, fontFamily: 'Mulish-Regular.ttf'),
                       ),
