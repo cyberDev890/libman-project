@@ -1,6 +1,7 @@
 # libman
 
-A new Flutter project.
+sebuah project unutk memenuhi tugas akhir
+
 
 ## Getting Started
 
