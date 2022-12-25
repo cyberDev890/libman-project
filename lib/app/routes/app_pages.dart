@@ -9,13 +9,12 @@ import '../modules/jenis_buku/bindings/jenis_buku_binding.dart';
 import '../modules/jenis_buku/views/jenis_buku_view.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/memerlukan_tindakan/views/memerlukan_tindakan.dart';
-import '../modules/models/buku.dart';
+
 import '../modules/profile/views/profile_view.dart';
 import '../modules/signUp/views/sign_up_view.dart';
 import '../modules/splashScreen/views/splash_screen_view.dart';
 import '../modules/tentang_aplikasi/views/tentang_aplikasi_view.dart';
 
-import '../modules/welcome/views/welcome_view.dart';
 part 'app_routes.dart';
 
 class AppPages {
@@ -37,10 +36,6 @@ class AppPages {
       page: () => SplashScreenView(),
     ),
     GetPage(
-      name: _Paths.WELCOME,
-      page: () => WelcomeView(),
-    ),
-    GetPage(
       name: _Paths.SIGN_UP,
       page: () => SignUpView(),
     ),
@@ -50,7 +45,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DETAIL,
-      page: () => DetailView(product: Get.arguments as Product, listData: {}),
+      page: () => DetailView(listData: {}),
     ),
     GetPage(
       name: _Paths.DAFTAR_FAVORIT,

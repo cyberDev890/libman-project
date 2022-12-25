@@ -6,12 +6,21 @@ import 'package:libman/app/modules/api/api.dart';
 
 import '../login/controllers/login_controller.dart';
 
+import '../models/bukuApi.dart';
 import '../signUp/controllers/sign_up_controller.dart';
 
 class ConnectApi {
   LoginController authController = Get.put(LoginController());
   SignUpController signUp = Get.put(SignUpController());
 
+  Future getBuku() async {
+    final response = await http.get(Uri.parse(API.daftarBuku));
+    if (response.statusCode == 200) {
+      return bukuFromJson(response.body.toString());
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   Future register() async {
     try {

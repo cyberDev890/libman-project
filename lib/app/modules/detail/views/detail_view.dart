@@ -1,16 +1,90 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:libman/app/modules/api/api.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'dart:convert';
 
-import '../../models/buku.dart';
-import '../controllers/detail_controller.dart';
+import "package:http/http.dart" as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-class DetailView extends GetView<DetailController> {
-  const DetailView({Key? key, required this.product, required this.listData})
-      : super(key: key);
-  final Product product;
+class DetailView extends StatefulWidget {
+  const DetailView({Key? key, required this.listData}) : super(key: key);
+
   final Map listData;
+
+  @override
+  State<DetailView> createState() => _DetailViewState();
+}
+
+class _DetailViewState extends State<DetailView> {
+  String? nis = '';
+  String? namaSiswa = '';
+  Future favorit() async {
+    final response = await http.post(Uri.parse(API.favorit), body: {
+      'NIS': '$nis',
+      'nama_siswa': '$namaSiswa',
+      'nama_buku': widget.listData['nama_buku'],
+      'kd_buku': widget.listData['kd_buku'],
+    });
+    print(response.body);
+    var data = json.decode(response.body);
+    if (data == "Success") {
+      return Alert(
+        context: context,
+        type: AlertType.success,
+        title: "Berhasil !",
+        desc: "Buku telah ditambahkan ke favorite",
+        buttons: [
+          DialogButton(
+            child: Text(
+              textAlign: TextAlign.center,
+              "Tetap di halaman",
+              style: TextStyle(
+                  color: Color(0xffB2B2B6),
+                  fontSize: 17,
+                  fontFamily: 'Mulish-Regular.ttf'),
+            ),
+            onPressed: () => Get.back(),
+            color: Colors.white,
+          ),
+          DialogButton(
+            child: Text(
+              textAlign: TextAlign.center,
+              "Lihat Daftar Favorite",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontFamily: 'Mulish-Regular.ttf'),
+            ),
+            onPressed: () => Get.toNamed('/daftar-favorit'),
+            color: Color(0xff00C443),
+          ),
+        ],
+      ).show();
+    } else {
+      Get.snackbar(
+        "Error",
+        "Sudah ditambahkan ke favorite",
+        duration: Duration(seconds: 1),
+      );
+    }
+  }
+
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      nis = preferences.getString("NIS");
+      namaSiswa = preferences.getString("nama_siswa");
+    });
+  }
+
+  @override
+  void initState() {
+    getPref();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +115,11 @@ class DetailView extends GetView<DetailController> {
                         color: Colors.white,
                       ),
                       child: Hero(
-                        tag: product.image!,
+                        tag: widget.listData['gambar'],
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            product.image!,
+                          child: Image.network(
+                            API.gambar + widget.listData['gambar'],
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -55,7 +129,7 @@ class DetailView extends GetView<DetailController> {
                     Container(
                       height: 30,
                       child: Text(
-                        listData['nama_buku'],
+                        widget.listData['nama_buku'],
                         style: TextStyle(
                             letterSpacing: 0.5,
                             fontSize: 20,
@@ -78,7 +152,7 @@ class DetailView extends GetView<DetailController> {
                         ),
                         Container(
                           child: Text(
-                            listData['jumlah'],
+                            widget.listData['jumlah'],
                             style: TextStyle(
                                 color: Color(0xff8A8A8E),
                                 letterSpacing: 0.5,
@@ -100,7 +174,7 @@ class DetailView extends GetView<DetailController> {
                         ),
                         Container(
                           child: Text(
-                            "Semester" + listData['semester'],
+                            "Semester " + widget.listData['semester'],
                             style: TextStyle(
                                 color: Color(0xff8A8A8E),
                                 letterSpacing: 0.5,
@@ -123,7 +197,7 @@ class DetailView extends GetView<DetailController> {
                         Container(
                           width: 125,
                           child: Text(
-                            "Kelas " + listData['tingkatan'],
+                            "Kelas " + widget.listData['tingkatan'],
                             style: TextStyle(
                                 color: Color(0xff8A8A8E),
                                 fontSize: 14,
@@ -140,7 +214,7 @@ class DetailView extends GetView<DetailController> {
                     Container(
                       height: MediaQuery.of(context).size.height * 0.030,
                       child: Text(
-                        listData['nama_buku'],
+                        widget.listData['nama_buku'],
                         style: TextStyle(
                             fontSize: 16, fontFamily: 'Mulish-Regular.ttf'),
                       ),
@@ -148,7 +222,7 @@ class DetailView extends GetView<DetailController> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
                       child: Text(
-                        product.description!,
+                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since. When an unknown printer took a galley.",
                         style: TextStyle(
                           fontSize: 14,
                           fontFamily: 'Mulish-Regular.ttf',
@@ -164,38 +238,7 @@ class DetailView extends GetView<DetailController> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.10),
                     ListTile(
                       onTap: () {
-                        Alert(
-                          context: context,
-                          type: AlertType.success,
-                          title: "Berhasil !",
-                          desc: "Buku telah ditambahkan ke favorite",
-                          buttons: [
-                            DialogButton(
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                "Tetap di halaman",
-                                style: TextStyle(
-                                    color: Color(0xffB2B2B6),
-                                    fontSize: 17,
-                                    fontFamily: 'Mulish-Regular.ttf'),
-                              ),
-                              onPressed: () => Get.back(),
-                              color: Colors.white,
-                            ),
-                            DialogButton(
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                "Lihat Daftar Favorite",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontFamily: 'Mulish-Regular.ttf'),
-                              ),
-                              onPressed: () => Get.toNamed('/daftar-favorit'),
-                              color: Color(0xff00C443),
-                            ),
-                          ],
-                        ).show();
+                        favorit();
                       },
                       leading: CircleAvatar(
                         radius: 20,

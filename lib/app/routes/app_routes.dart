@@ -10,7 +10,6 @@ abstract class Routes {
   static const WELCOME = _Paths.WELCOME;
   static const SIGN_UP = _Paths.SIGN_UP;
   static const PROFILE = _Paths.PROFILE;
-  static const TEST = _Paths.TEST;
   static const DETAIL = _Paths.DETAIL;
   static const DAFTAR_FAVORIT = _Paths.DAFTAR_FAVORIT;
   static const JENIS_BUKU = _Paths.JENIS_BUKU;
@@ -27,7 +26,6 @@ abstract class _Paths {
   static const WELCOME = '/welcome';
   static const SIGN_UP = '/sign-up';
   static const PROFILE = '/profile';
-  static const TEST = '/test';
   static const DETAIL = '/detail';
   static const DAFTAR_FAVORIT = '/daftar-favorit';
   static const JENIS_BUKU = '/jenis-buku';

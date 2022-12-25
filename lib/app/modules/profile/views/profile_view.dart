@@ -160,8 +160,7 @@ class _profileState extends State<profile> {
                               profileController.isProficPicPathSet.value == true
                                   ? FileImage(File(profileController
                                       .profilePicPath.value)) as ImageProvider
-                                  : NetworkImage(
-                                      'https://10.0.2.2/testing/$gambar'),
+                                  : NetworkImage(API.gambar + '$gambar'),
                           radius: 80,
                         )),
                     Positioned(
@@ -193,12 +192,13 @@ class _profileState extends State<profile> {
                   height: 20.0,
                 ),
                 TLtextfieldProfile(
+                    maxLenght: 4,
                     controller: profileController.nisC,
                     label: "NIS",
                     hint: "$nis",
                     keyboardTipe: TextInputType.number),
                 const SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
                 TLtextfield(
                     controller: profileController.namaC,
@@ -209,6 +209,7 @@ class _profileState extends State<profile> {
                   height: 20.0,
                 ),
                 TLtextfield(
+                    maxLenght: 13,
                     controller: profileController.noTelp,
                     label: "No Telepon",
                     hint: "$telp",

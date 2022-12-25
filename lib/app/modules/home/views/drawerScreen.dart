@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import "package:http/http.dart" as http;
+import '../../api/api.dart';
+import '../../api/connectedApi.dart';
 
 class DrawerScreen extends StatefulWidget {
   final VoidCallback? signOut;
@@ -11,6 +17,7 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
+  ConnectApi connect = Get.put(ConnectApi());
   signOut() {
     setState(() {
       widget.signOut!();
@@ -32,8 +39,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
       isloading = false;
     });
   }
-
-//buatkan refresh image setelah edit profile di profile screen  //
 
   @override
   void initState() {
@@ -95,7 +100,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
             DrawerListTile(
               iconData: Icons.apps_outage_rounded,
               title: "Memerlukan tindakan",
-              text: '7',
+              text: '',
               ontilePressed: () {
                 Get.toNamed('/history');
               },
@@ -103,7 +108,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
             DrawerListTile(
               iconData: Icons.bookmark_add_outlined,
               title: "Daftar Favorite",
-              text: '7',
+              text: '',
               ontilePressed: () {
                 Get.toNamed('/daftar-favorit');
               },

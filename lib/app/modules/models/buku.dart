@@ -48,7 +48,7 @@ final List<Product> products = [
     semester: 'Semester 1',
     size: 11,
     description: dummyText,
-    image: "image/images/buku4.jpg",
+    image: "image/images/buku3.jpeg",
   ),
   Product(
     id: 5,
@@ -56,7 +56,7 @@ final List<Product> products = [
     semester: 'Semester 1',
     size: 12,
     description: dummyText,
-    image: "image/images/buku5.jpg",
+    image: "image/images/buku3.jpeg",
   ),
 ];
 

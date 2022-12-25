@@ -1,50 +1,37 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:libman/app/modules/api/api.dart';
 import 'package:libman/app/modules/api/connectedApi.dart';
-import 'package:http/http.dart' as http;
+import 'package:libman/app/modules/daftar_buku/views/searchBuku.dart';
 import 'package:libman/app/modules/detail/views/detail_view.dart';
 import '../../models/buku.dart';
 
-import '../controllers/daftar_buku_controller.dart';
+import '../../models/bukuApi.dart';
 
-class DaftarBukuView extends GetView<DaftarBukuController> {
-  const DaftarBukuView({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return daftarbuku();
-  }
-}
-
-class daftarbuku extends StatefulWidget {
-  const daftarbuku({super.key});
+class DaftarBukuView extends StatefulWidget {
+  const DaftarBukuView({super.key});
 
   @override
-  State<daftarbuku> createState() => _daftarbukuState();
+  State<DaftarBukuView> createState() => _daftarbukuState();
 }
 
-class _daftarbukuState extends State<daftarbuku> {
+class _daftarbukuState extends State<DaftarBukuView> {
   ConnectApi connect = Get.put(ConnectApi());
-
-  List data2 = [];
+  TextEditingController search = TextEditingController();
+  List<Buku> data2 = [];
   bool isLoading = true;
-  Future _getData() async {
-    final response = await http.get(Uri.parse(API.daftarBuku));
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      setState(() {
-        data2 = data;
-        isLoading = false;
-      });
-    }
-  }
+  late Future data;
 
   @override
   void initState() {
-    _getData();
+    data = connect.getBuku();
+    data.then((value) {
+      setState(() {
+        data2 = value;
+        isLoading = false;
+      });
+    });
     super.initState();
   }
 
@@ -108,6 +95,7 @@ class _daftarbukuState extends State<daftarbuku> {
                     ),
                     Expanded(
                       child: TextFormField(
+                        controller: search,
                         initialValue: null,
                         decoration: InputDecoration.collapsed(
                           filled: true,
@@ -117,7 +105,9 @@ class _daftarbukuState extends State<daftarbuku> {
                               color: Colors.grey[500], fontFamily: 'Mulish'),
                           hoverColor: Colors.transparent,
                         ),
-                        onFieldSubmitted: (value) {},
+                        onFieldSubmitted: (value) {
+                          // Get.to(() => searchBuku(keywords: search.toString()));
+                        },
                       ),
                     ),
                   ],
@@ -127,10 +117,21 @@ class _daftarbukuState extends State<daftarbuku> {
             Container(
               padding: EdgeInsets.all(10),
               height: size.height * 0.8,
-              child: isLoading
+              child: data2.isEmpty
                   ? Center(child: CircularProgressIndicator())
                   : RefreshIndicator(
-                      onRefresh: _getData,
+                      onRefresh: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        data = connect.getBuku();
+                        data.then((value) {
+                          setState(() {
+                            data2 = value;
+                            isLoading = false;
+                          });
+                        });
+                      },
                       child: ListView.builder(
                           itemCount: data2.length,
                           shrinkWrap: true,
@@ -139,16 +140,15 @@ class _daftarbukuState extends State<daftarbuku> {
                                 onTap: () {
                                   Get.to(
                                     () => DetailView(
-                                        product: products[index],
+                
                                         listData: {
-                                          'nama_buku': data2[index]
-                                              ['nama_buku'],
-                                          'jenis_buku': data2[index]
-                                              ['jenis_buku'],
-                                          'semester': data2[index]['semester'],
-                                          'tingkatan': data2[index]
-                                              ['tingkatan'],
-                                          'jumlah': data2[index]['jumlah'],
+                                          'kd_buku': data2[index].kdBuku,
+                                          'nama_buku': data2[index].namaBuku,
+                                          'jenis_buku': data2[index].jenisBuku,
+                                          'semester': data2[index].semester,
+                                          'tingkatan': data2[index].tingkatan,
+                                          'jumlah': data2[index].jumlah,
+                                          'gambar': data2[index].gambar,
                                         }),
                                   );
                                 },
@@ -160,8 +160,8 @@ class _daftarbukuState extends State<daftarbuku> {
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           bottomLeft: Radius.circular(10)),
-                                      child: Image.asset(
-                                        products[index].image!,
+                                      child: Image.network(
+                                        API.gambar + data2[index].gambar,
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -174,7 +174,7 @@ class _daftarbukuState extends State<daftarbuku> {
                                       children: <Widget>[
                                         Container(
                                           height: 25,
-                                          child: Text(data2[index]['nama_buku'],
+                                          child: Text(data2[index].namaBuku,
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 17,
@@ -205,7 +205,7 @@ class _daftarbukuState extends State<daftarbuku> {
                                                   0, 0, 15, 0),
                                               child: Text(
                                                   "Semester " +
-                                                      data2[index]['semester'],
+                                                      data2[index].semester,
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
@@ -238,7 +238,7 @@ class _daftarbukuState extends State<daftarbuku> {
                                                   0, 0, 15, 0),
                                               child: Text(
                                                   "Stok: " +
-                                                      data2[index]['jumlah'],
+                                                      data2[index].jumlah,
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,

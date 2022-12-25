@@ -4,28 +4,19 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../api/api.dart';
-import '../../models/buku.dart';
-import '../controllers/memerlukan_tindakan_controller.dart';
 
-class MemerlukantindakanView extends GetView<MemerlukantindakanController> {
-  const MemerlukantindakanView({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return tindakan();
-  }
-}
-
-class tindakan extends StatefulWidget {
-  const tindakan({super.key});
+class MemerlukantindakanView extends StatefulWidget {
+  const MemerlukantindakanView({super.key});
 
   @override
-  State<tindakan> createState() => _tindakanState();
+  State<MemerlukantindakanView> createState() => _tindakanState();
 }
 
-class _tindakanState extends State<tindakan> {
-  String nis = '0001';
+class _tindakanState extends State<MemerlukantindakanView> {
+  String nis = '';
   List data1 = [];
 
   getPref() async {
@@ -33,21 +24,24 @@ class _tindakanState extends State<tindakan> {
     setState(() {
       nis = preferences.getString("NIS")!;
     });
-    print(nis);
   }
 
-  Future getData() async {
-    var response = await http.get(Uri.parse(API.tindakan + nis));
-    var data = json.decode(response.body);
-    setState(() {
-      data1 = data;
+  Future getDataMemerlukanTindakan() async {
+    var response = await http.post(Uri.parse(API.tindakan), body: {
+      'NIS': nis,
     });
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      setState(() {
+        data1 = data;
+      });
+    }
   }
 
   @override
   void initState() {
+    getDataMemerlukanTindakan();
     getPref();
-    getData();
     super.initState();
   }
 
@@ -115,10 +109,18 @@ class _tindakanState extends State<tindakan> {
               child: Container(
                 padding: EdgeInsets.all(10),
                 child: RefreshIndicator(
-                  onRefresh: getData,
+                  onRefresh: getDataMemerlukanTindakan,
                   child: data1.length == 0
-                      ? Center(
-                          child: Text("data kosong"),
+                      ? InkWell(
+                          onTap: getDataMemerlukanTindakan,
+                          child: Center(
+                            child: Text("Tidak ada data",
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 183, 172, 172),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Mulish')),
+                          ),
                         )
                       : ListView.builder(
                           itemCount: data1.length,
@@ -132,8 +134,8 @@ class _tindakanState extends State<tindakan> {
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10)),
-                                  child: Image.asset(
-                                    products[index].image!,
+                                  child: Image.network(
+                                    API.gambar + data1[index]['gambar'],
                                     fit: BoxFit.contain,
                                   ),
                                 ),
@@ -203,7 +205,7 @@ class _tindakanState extends State<tindakan> {
                                       width: 242,
                                       child: Center(
                                         child: Text(
-                                            "Status : Kembalikan sebelum" +
+                                            "Status : Kembalikan sebelum " +
                                                 data1[index]
                                                     ['tanggal_pengembalian'],
                                             style: TextStyle(
@@ -225,7 +227,6 @@ class _tindakanState extends State<tindakan> {
                 ),
               ),
             ),
-            Text('$nis'),
           ],
         ));
   }
