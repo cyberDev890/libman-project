@@ -75,7 +75,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         backgroundColor: Colors.grey[200],
                         child: ClipOval(
                             child: Image.network(
-                          "https://10.0.2.2/testing/$gambar",
+                          API.gambar + '$gambar',
                           width: 100,
                           height: 100,
                           fit: BoxFit.contain,
