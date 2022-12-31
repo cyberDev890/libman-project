@@ -51,7 +51,7 @@ class _loginState extends State<login> {
       if (userData.data![0].gambar != null) {
         gambar = userData.data![0].gambar;
       } else {
-        gambar = 'uploads/image_picker755427705143972387.png';
+        gambar = 'uploads/default.png';
       }
       setState(() {
         _loginstatus = loginstatus.signIn;
