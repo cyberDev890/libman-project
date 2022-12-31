@@ -139,7 +139,6 @@ class _daftarbukuState extends State<DaftarBukuView> {
                                 onTap: () {
                                   Get.to(
                                     () => DetailView(
-                
                                         listData: {
                                           'kd_buku': data2[index].kdBuku,
                                           'nama_buku': data2[index].namaBuku,

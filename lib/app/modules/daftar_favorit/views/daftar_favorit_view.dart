@@ -179,7 +179,7 @@ class _DaftarFavoritViewState extends State<DaftarFavoritView> {
                                           children: <Widget>[
                                             Container(
                                               height: 25,
-                                              child: Text(
+                                              child: Text( 
                                                   data2[index]['nama_buku'],
                                                   style: TextStyle(
                                                       color: Colors.black,

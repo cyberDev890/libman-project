@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:libman/app/modules/api/api.dart';
+
 List<Buku> bukuFromJson(String str) =>
     List<Buku>.from(json.decode(str).map((x) => Buku.fromJson(x)));
 
@@ -48,10 +50,11 @@ class Buku {
         kdBuku: json["kd_buku"] == null ? null : json["kd_buku"],
         namaBuku: json["nama_buku"] == null ? null : json["nama_buku"],
         jenisBuku: json["jenis_buku"] == null ? null : json["jenis_buku"],
-        semester: json["semester"] == null ? null : json["semester"],
+        semester: json["semester"] == null ? '1&2' : json["semester"],
         tingkatan: json["tingkatan"] == null ? null : json["tingkatan"],
         jumlah: json["jumlah"] == null ? null : json["jumlah"],
-        gambar: json["gambar"] == null ? null : json["gambar"],
+        gambar:
+            json["gambar"] == null ? 'uploads/Default.jpeg' : json["gambar"],
       );
 
   Map<String, dynamic> toJson() => {
